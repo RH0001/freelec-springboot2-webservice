@@ -2,6 +2,7 @@ package com.book.review.service;
 
 import com.book.review.domain.Posts;
 import com.book.review.domain.PostsRepository;
+import com.book.review.web.dto.PostsListResponseDto;
 import com.book.review.web.dto.PostsResponseDto;
 import com.book.review.web.dto.PostsSaveRequestDto;
 import com.book.review.web.dto.PostsUpdateRequestDto;
@@ -9,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -32,4 +36,16 @@ public class PostsService {
         return new PostsResponseDto(entity);
     }
 
+    @Transactional
+    public List<PostsListResponseDto> findAllDesc() {
+        return postsRepository.findAllDesc().stream()
+                .map(PostsListResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        Posts posts = postsRepository.findById(id).orElseThrow(()->new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
+        postsRepository.delete(posts);
+    }
 }
