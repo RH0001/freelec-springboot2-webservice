@@ -1,5 +1,6 @@
 package com.book.review.web;
 
+import com.book.review.config.auth.LoginUser;
 import com.book.review.config.auth.dto.SessionUser;
 import com.book.review.service.PostsService;
 import com.book.review.web.dto.PostsResponseDto;
@@ -18,13 +19,11 @@ public class IndexController {
 
     private final PostsService postsService;
     private final HttpSession httpSession;
-    private SessionUser user;
 
     @GetMapping("/")
-    public String index(Model model) {
+    public String index(Model model, @LoginUser SessionUser user) {
         model.addAttribute("posts", postsService.findAllDesc());
 
-        user = (SessionUser) httpSession.getAttribute("user");
         if (user != null) {
             model.addAttribute("myUserName", user.getName());
         }
@@ -32,7 +31,7 @@ public class IndexController {
     }
 
     @GetMapping("/posts/save")
-    public String save(Model model) {
+    public String save(Model model, @LoginUser SessionUser user) {
         if (user != null) {
             model.addAttribute("userName", user.getName());
         }
