@@ -44,9 +44,13 @@ dependencies {
     // Mustache
     implementation('org.springframework.boot:spring-boot-starter-mustache')
 
-    //OAuth
+    // OAuth
     implementation('org.springframework.boot:spring-boot-starter-oauth2-client')
 
-    //session JDBC
+    // session JDBC
     implementation('org.springframework.session:spring-session-jdbc')
+
+    // spring security
+    testImplementation('org.springframework.security:spring-security-test')
+
 }
